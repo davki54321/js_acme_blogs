@@ -4,7 +4,7 @@ INF 651 VC - Fall 2024
 Final Project 
 */
 
-// Problem 1
+//////// Problem 1
 
 const createElemWithText = (htmlElementString = "p", textContent = "", className) => {
     
@@ -19,20 +19,20 @@ const createElemWithText = (htmlElementString = "p", textContent = "", className
 } 
 
 
-// Problem 2
+//////// Problem 2
 
-const createSelectOptions = (jsonData) => {
+const createSelectOptions = (optionsJson) => {
 
-    if (!jsonData) { return undefined; }
+    if (!optionsJson) { return undefined; }
 
     const optionArray = [];
 
-    jsonData.forEach( (element) => {
+    optionsJson.forEach( (option) => {
         
         const newOption = document.createElement("option");
 
-        newOption.textContent = element.name;
-        newOption.value = element.id;
+        newOption.textContent = option.name;
+        newOption.value = option.id;
 
         optionArray.push(newOption);
     });
@@ -41,25 +41,21 @@ const createSelectOptions = (jsonData) => {
 }
 
 
-// Problem 3
+//////// Problem 3
 
 const toggleCommentSection = (postId) => {
 
     if(!postId) { return; }
 
-    // https://stackoverflow.com/questions/7647095/getting-html-elements-by-their-attribute-names
-
     const section = document.querySelector(`section[data-post-id="${postId}"]`);
     
-    if (section) {
-        section.classList.toggle('hide');
-    }
+    if (section) { section.classList.toggle('hide'); }
     
     return section;
 }
 
 
-// problem 4
+//////// problem 4
 
 const toggleCommentButton = (postId) => {
 
@@ -81,11 +77,15 @@ const toggleCommentButton = (postId) => {
 }
 
 
-// problem 5
+//////// problem 5
 
 const deleteChildElements = (parentElement) => {
 
-    if (!parentElement || (parentElement.length === 0)) { return; }
+    if (!parentElement || 
+        parentElement.length === 0 || 
+        !(parentElement instanceof HTMLElement)) {
+            return; 
+    }
 
     let childElement = parentElement.lastElementChild;
 
@@ -98,12 +98,9 @@ const deleteChildElements = (parentElement) => {
     return parentElement;
 }
 
-// problem 6
+//////// problem 6
 
 const addButtonListeners = () => {
-
-    // const main = document.querySelector("main");
-    // const buttons = main.querySelectorAll("button");
 
     const buttons = document.querySelectorAll("main button");
 
@@ -114,7 +111,6 @@ const addButtonListeners = () => {
             const postId = button.dataset.postId;
 
             if (postId) {
-
                 button.addEventListener("click", function (e) {toggleComments(e, postId)}, false);
             }
         });
@@ -124,12 +120,11 @@ const addButtonListeners = () => {
 }
 
 
-// problem 7
+//////// problem 7
 
 const removeButtonListeners = () => {
 
-    const main = document.querySelector("main");
-    const buttons = main.querySelectorAll("button");
+    const buttons = document.querySelectorAll("main button");
 
     if (!buttons?.length > 0) {
 
@@ -148,7 +143,7 @@ const removeButtonListeners = () => {
 }
 
 
-// problem 8
+//////// problem 8
 
 const createComments = (jsonDataComments) => {
 
@@ -174,7 +169,7 @@ const createComments = (jsonDataComments) => {
 }
 
 
-// problem 9
+//////// problem 9
 
 const populateSelectMenu = (jsonDataMenu) => {
 
@@ -192,7 +187,7 @@ const populateSelectMenu = (jsonDataMenu) => {
 }
 
 
-// problem 10
+//////// problem 10
 
 const getUsers = async () => {
 
@@ -202,14 +197,14 @@ const getUsers = async () => {
         jsonUserData = await response.json();
     }
     catch(e) {
-
+        console.log(e);
     }
 
     return jsonUserData;
 }
 
 
-// problem 11
+//////// problem 11
 
 const getUserPosts = async (userId) => {
 
@@ -228,14 +223,14 @@ const getUserPosts = async (userId) => {
         });
     }
     catch(e) {
-
+        console.log(e);
     }
 
     return jsonUserPosts;
 }
 
 
-// problem 12
+//////// problem 12
 
 const getUser = async (userId) => {
 
@@ -248,20 +243,18 @@ const getUser = async (userId) => {
         jsonUserData = await response.json();
     }
     catch(e) {
-
+        console.log(e);
     }
 
     return jsonUserData;
 }
 
 
-// problem 13
+//////// problem 13
 
 const getPostComments = async (postId) => {
 
-    if (!postId) {
-        return;
-    }
+    if (!postId) { return; }
 
     let jsonComments = null;
 
@@ -270,14 +263,14 @@ const getPostComments = async (postId) => {
         jsonComments = await response.json();
     }
     catch(e) {
-
+        console.log(e);
     }
 
     return jsonComments;
 }
 
 
-// problem 14
+//////// problem 14
 
 const displayComments = async (postId) => {
 
@@ -300,7 +293,7 @@ const displayComments = async (postId) => {
 }
 
 
-// problem 15
+//////// problem 15
 
 const createPosts = async (jsonDataPosts) => {
 
@@ -341,7 +334,7 @@ const createPosts = async (jsonDataPosts) => {
 }
 
 
-// problem 16
+//////// problem 16
 
 const displayPosts = async (jsonDataPosts) => {
 
@@ -364,7 +357,7 @@ const displayPosts = async (jsonDataPosts) => {
 }
 
 
-// problem 17
+//////// problem 17
 
 const toggleComments = (event, postId) => {
 
@@ -384,7 +377,7 @@ const toggleComments = (event, postId) => {
 }
 
 
-// problem 18
+//////// problem 18
 
 const refreshPosts = async (jsonData) => {
 
@@ -411,7 +404,7 @@ const refreshPosts = async (jsonData) => {
 }
 
 
-// problem 19
+//////// problem 19
 
 const selectMenuChangeEventHandler = async (event) => {
 
@@ -439,7 +432,7 @@ const selectMenuChangeEventHandler = async (event) => {
 }
 
 
-// problem 20
+//////// problem 20
 
 const initPage = async () => {
 
@@ -456,7 +449,7 @@ const initPage = async () => {
 }
 
 
-// problem 21
+//////// problem 21
 
 const initApp = () => {
 
