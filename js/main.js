@@ -370,8 +370,7 @@ const toggleComments = (event, postId) => {
     const button = toggleCommentButton(postId);
     
     const array = [];
-    array.push(section);
-    array.push(button);
+    array.push(section, button);
 
     return array;
 }
@@ -395,10 +394,12 @@ const refreshPosts = async (jsonData) => {
 
     const array = [];
 
-    array.push(removeButtons);
-    array.push(mainWithoutChildren);
-    array.push(fragment);
-    array.push(addButtons);
+    array.push(
+        removeButtons, 
+        mainWithoutChildren,
+        fragment,
+        addButtons
+    );
 
     return array;
 }
@@ -424,9 +425,11 @@ const selectMenuChangeEventHandler = async (event) => {
 
     const array = [];
 
-    array.push(userId);
-    array.push(jsonPostData);
-    array.push(refreshPostsArray);
+    array.push(
+        userId,
+        jsonPostData,
+        refreshPostsArray
+    );
 
     return array;
 }
@@ -442,8 +445,7 @@ const initPage = async () => {
 
     const array = [];
 
-    array.push(jsonDataUsers);
-    array.push(selectMenu);
+    array.push(jsonDataUsers, selectMenu);
 
     return array;
 }
