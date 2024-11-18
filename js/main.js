@@ -126,7 +126,7 @@ const removeButtonListeners = () => {
 
     const buttons = document.querySelectorAll("main button");
 
-    if (!buttons?.length > 0) {
+    if (buttons?.length) {
 
         buttons.forEach( (button) => {
 
