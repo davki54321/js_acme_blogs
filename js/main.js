@@ -25,7 +25,7 @@ const createSelectOptions = (optionsJson) => {
 
     if (!optionsJson) { return undefined; }
 
-    const optionArray = [];
+    const optionsArray = [];
 
     optionsJson.forEach( (option) => {
         
@@ -34,10 +34,10 @@ const createSelectOptions = (optionsJson) => {
         newOption.textContent = option.name;
         newOption.value = option.id;
 
-        optionArray.push(newOption);
+        optionsArray.push(newOption);
     });
 
-    return optionArray;
+    return optionsArray;
 }
 
 
@@ -148,13 +148,13 @@ const removeButtonListeners = () => {
 
 //////// problem 8
 
-const createComments = (jsonDataComments) => {
+const createComments = (commentsJson) => {
 
-    if(!jsonDataComments) { return; }
+    if(!commentsJson) { return; }
 
     const fragment = document.createDocumentFragment();
 
-    jsonDataComments.forEach( (comment) => {
+    commentsJson.forEach( (comment) => {
 
         const article = document.createElement("article");
         const h3 = createElemWithText("h3", comment.name);
@@ -174,13 +174,13 @@ const createComments = (jsonDataComments) => {
 
 //////// problem 9
 
-const populateSelectMenu = (jsonDataMenu) => {
+const populateSelectMenu = (selectMenuJson) => {
 
-    if (!jsonDataMenu) { return; }
+    if (!selectMenuJson) { return; }
 
     const selectMenu = document.querySelector("#selectMenu");
 
-    const selectElementArray = createSelectOptions(jsonDataMenu);
+    const selectElementArray = createSelectOptions(selectMenuJson);
 
     selectElementArray.forEach((selectElement) => {
         selectMenu.append(selectElement);
@@ -194,16 +194,16 @@ const populateSelectMenu = (jsonDataMenu) => {
 
 const getUsers = async () => {
 
-    let jsonUserData = null;
+    let usersJson = null;
     try {
         const response = await fetch('https://jsonplaceholder.typicode.com/users');
-        jsonUserData = await response.json();
+        usersJson = await response.json();
     }
     catch(e) {
         console.log(e);
     }
 
-    return jsonUserData;
+    return usersJson;
 }
 
 
@@ -213,7 +213,7 @@ const getUserPosts = async (userId) => {
 
     if (!userId) { return; }
 
-    let jsonUserPosts = [];
+    let userPostsJson = []; 
     try {
         const response = await fetch(`https://jsonplaceholder.typicode.com/posts/`);
         const jsonAllUserPosts = await response.json();
@@ -221,7 +221,7 @@ const getUserPosts = async (userId) => {
         jsonAllUserPosts.forEach( (post) => {
 
             if(post.userId === userId) {
-                jsonUserPosts.push(post);
+                userPostsJson.push(post);
             }
         });
     }
@@ -229,7 +229,7 @@ const getUserPosts = async (userId) => {
         console.log(e);
     }
 
-    return jsonUserPosts;
+    return userPostsJson;
 }
 
 
@@ -239,17 +239,17 @@ const getUser = async (userId) => {
 
     if (!userId) { return; }
 
-    let jsonUserData = null;
+    let userJson = null;
 
     try {
         const response = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`);
-        jsonUserData = await response.json();
+        userJson = await response.json();
     }
     catch(e) {
         console.log(e);
     }
 
-    return jsonUserData;
+    return userJson;
 }
 
 
@@ -259,17 +259,17 @@ const getPostComments = async (postId) => {
 
     if (!postId) { return; }
 
-    let jsonComments = null;
+    let commentsJson = null;
 
     try {
         const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`);
-        jsonComments = await response.json();
+        commentsJson = await response.json();
     }
     catch(e) {
         console.log(e);
     }
 
-    return jsonComments;
+    return commentsJson;
 }
 
 
@@ -285,9 +285,9 @@ const displayComments = async (postId) => {
 
     section.classList.add("comments", "hide");
 
-    const comments = await getPostComments(postId);
+    const commentsJson = await getPostComments(postId);
 
-    const commentsFragment = createComments(comments);
+    const commentsFragment = createComments(commentsJson);
 
     section.append(commentsFragment);
 
@@ -297,13 +297,13 @@ const displayComments = async (postId) => {
 
 //////// problem 15
 
-const createPosts = async (jsonDataPosts) => {
+const createPosts = async (postsJson) => {
 
-    if (!jsonDataPosts) { return; }
+    if (!postsJson) { return; }
 
     const fragment = document.createDocumentFragment();
     
-    for (const post of jsonDataPosts) {
+    for (const post of postsJson) {
         
         const h2 = createElemWithText("h2", post.title);
         const paraPostBody = createElemWithText("p", post.body);
@@ -367,12 +367,12 @@ const toggleComments = (event, postId) => {
     
     event.target.listener = true;
     
-    const section = toggleCommentSection(postId);
+    const sectionToggled = toggleCommentSection(postId);
     
-    const button = toggleCommentButton(postId);
+    const buttonToggled = toggleCommentButton(postId);
     
     const toggledSectionButtonArray = [];
-    toggledSectionButtonArray.push(section, button);
+    toggledSectionButtonArray.push(sectionToggled, buttonToggled);
 
     return toggledSectionButtonArray;
 }
@@ -380,27 +380,27 @@ const toggleComments = (event, postId) => {
 
 //////// problem 18
 
-const refreshPosts = async (jsonData) => {
+const refreshPosts = async (postsJson) => {
 
-    if (!jsonData) { return; }
+    if (!postsJson) { return; }
 
-    const removeButtons = removeButtonListeners();
+    const buttonsWithoutEventListeners = removeButtonListeners();
 
     const main = document.querySelector("main");
 
     const mainWithoutChildren = deleteChildElements(main);
 
-    const postsFragment = await displayPosts(jsonData);
+    const postsFragment = await displayPosts(postsJson);
 
-    const addButtons = addButtonListeners();
+    const buttonsWithEventListeners = addButtonListeners();
 
     const refreshedPostsArray = [];
 
     refreshedPostsArray.push(
-        removeButtons, 
+        buttonsWithoutEventListeners, 
         mainWithoutChildren,
         postsFragment,
-        addButtons
+        buttonsWithEventListeners
     );
 
     return refreshedPostsArray;
@@ -419,9 +419,9 @@ const selectMenuChangeEventHandler = async (event) => {
     
     const userId = event?.target?.value || 1;
 
-    const jsonPostData = await getUserPosts(userId);
+    const userPostsJson = await getUserPosts(userId);
 
-    const refreshPostsArray = await refreshPosts(jsonPostData);
+    const refreshedPostsArray = await refreshPosts(userPostsJson);
 
     select.disabled = false;
 
@@ -429,8 +429,8 @@ const selectMenuChangeEventHandler = async (event) => {
 
     array.push(
         userId,
-        jsonPostData,
-        refreshPostsArray
+        userPostsJson,
+        refreshedPostsArray
     );
 
     return array;
@@ -441,15 +441,15 @@ const selectMenuChangeEventHandler = async (event) => {
 
 const initPage = async () => {
 
-    const jsonDataUsers = await getUsers();
+    const usersJson = await getUsers();
 
-    const selectMenu = populateSelectMenu(jsonDataUsers);
+    const selectMenu = populateSelectMenu(usersJson);
 
-    const array = [];
+    const userAndMenuArray = [];
 
-    array.push(jsonDataUsers, selectMenu);
+    userAndMenuArray.push(usersJson, selectMenu);
 
-    return array;
+    return userAndMenuArray;
 }
 
 
