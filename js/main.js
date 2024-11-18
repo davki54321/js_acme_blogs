@@ -63,13 +63,16 @@ const toggleCommentButton = (postId) => {
 
     const button = document.querySelector(`button[data-post-id="${postId}"]`);
 
+    const showCommentsString = "Show Comments";
+    const hideCommentsString = "Hide Comments";
+
     if (button) {
 
-        if (button.textContent === "Show Comments") {
-            button.textContent = "Hide Comments";
+        if (button.textContent === showCommentsString) {
+            button.textContent = hideCommentsString;
         }
         else {
-            button.textContent = "Show Comments";
+            button.textContent = showCommentsString;
         }
     }
 
@@ -177,10 +180,10 @@ const populateSelectMenu = (jsonDataMenu) => {
 
     const selectMenu = document.querySelector("#selectMenu");
 
-    const elementsArray = createSelectOptions(jsonDataMenu);
+    const selectElementArray = createSelectOptions(jsonDataMenu);
 
-    elementsArray.forEach((element) => {
-        selectMenu.append(element);
+    selectElementArray.forEach((selectElement) => {
+        selectMenu.append(selectElement);
     });
 
     return selectMenu;
@@ -280,14 +283,13 @@ const displayComments = async (postId) => {
 
     section.dataset.postId = postId;
 
-    section.classList.add("comments");
-    section.classList.add("hide");
+    section.classList.add("comments", "hide");
 
     const comments = await getPostComments(postId);
 
-    const fragment = createComments(comments);
+    const commentsFragment = createComments(comments);
 
-    section.append(fragment);
+    section.append(commentsFragment);
 
     return section;
 }
@@ -336,24 +338,24 @@ const createPosts = async (jsonDataPosts) => {
 
 //////// problem 16
 
-const displayPosts = async (jsonDataPosts) => {
+const displayPosts = async (postsJson) => {
 
     const main = document.querySelector("main");
 
-    let element = null;
+    let postsFragment = null;
 
-    if(jsonDataPosts) {
-        element = await createPosts(jsonDataPosts);
+    if(postsJson) {
+        postsFragment = await createPosts(postsJson);
     }
     else {
         const defaultParagraph = document.querySelector(".default-text");
-        element = createElemWithText("p", defaultParagraph.textContent);
-        element.classList.add("default-text");
+        postsFragment = createElemWithText("p", defaultParagraph.textContent);
+        postsFragment.classList.add("default-text");
     }
 
-    main.append(element);
+    main.append(postsFragment);
 
-    return element;
+    return postsFragment;
 }
 
 
@@ -369,10 +371,10 @@ const toggleComments = (event, postId) => {
     
     const button = toggleCommentButton(postId);
     
-    const array = [];
-    array.push(section, button);
+    const toggledSectionButtonArray = [];
+    toggledSectionButtonArray.push(section, button);
 
-    return array;
+    return toggledSectionButtonArray;
 }
 
 
@@ -388,20 +390,20 @@ const refreshPosts = async (jsonData) => {
 
     const mainWithoutChildren = deleteChildElements(main);
 
-    const fragment = await displayPosts(jsonData);
+    const postsFragment = await displayPosts(jsonData);
 
     const addButtons = addButtonListeners();
 
-    const array = [];
+    const refreshedPostsArray = [];
 
-    array.push(
+    refreshedPostsArray.push(
         removeButtons, 
         mainWithoutChildren,
-        fragment,
+        postsFragment,
         addButtons
     );
 
-    return array;
+    return refreshedPostsArray;
 }
 
 
