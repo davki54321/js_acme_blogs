@@ -104,7 +104,7 @@ const addButtonListeners = () => {
 
     const buttons = document.querySelectorAll("main button");
 
-    if (!buttons?.length) {
+    if (buttons?.length) {
         
         buttons.forEach( (button) => {
 
